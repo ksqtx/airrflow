@@ -140,7 +140,8 @@ workflow PRESTO_UMI {
             params.umi_length,
             params.primer_r2_extract_len,
             params.primer_r2_mask_mode,
-            true,
+            false,
+            //true,
             "R2"
         )
 
@@ -359,7 +360,8 @@ workflow PRESTO_UMI {
                 barcode_R1,
                 params.primer_r1_maxerror,
                 params.primer_r1_mask_mode,
-                revpr_R1,
+                //revpr_R1,
+                false,
                 "R1"
             )
             def barcode_R2 = (params.umi_position == "R2") ? true : false
