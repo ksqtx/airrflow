@@ -56,8 +56,9 @@ if (packageVersion("alakazam") < "1.0.3") {
 }
 
 # Concordant locus
-same_locus <- getLocus(db[["v_call"]]) == db[["locus"]]
-
+##same_locus <- getLocus(db[["v_call"]]) == db[["locus"]]
+#adjust so that v_call does not need to match locus
+sample_locus <- TRUE
 # Max 10% N
 n_count <- stri_count(db$sequence_alignment, regex = "Nn")
 positions_count <- stri_count(db$sequence_alignment, regex = "[^-.]")
@@ -68,8 +69,8 @@ if (any(not_0)) {
 }
 low_n <- n_count <= 0.10
 
-# Min length 200 nt
-long_seq <- stri_count(db$sequence_alignment, regex = "[^-.Nn]") >= 200
+# Min length 100 nt
+long_seq <- stri_count(db$sequence_alignment, regex = "[^-.Nn]") >= 100
 
 log <- data.frame(
     "same_locus" = same_locus,
