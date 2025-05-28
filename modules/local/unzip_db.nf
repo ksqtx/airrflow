@@ -1,6 +1,8 @@
 process UNZIP_DB {
     tag "unzip_db"
     label 'process_medium'
+    errorStrategy 'retry'
+    maxRetries 3
 
     conda "conda-forge::sed=4.7"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -17,7 +19,7 @@ process UNZIP_DB {
     script:
     unzipped = archive.toString() - '.zip'
     """
-    ls -alFh / # fdo
+    sleep 120 # give the /tmp directory time to initialize
     ls -alFh /tmp # fdo
     whoami # fdo
     groups # fdo
