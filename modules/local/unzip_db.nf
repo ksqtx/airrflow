@@ -17,6 +17,10 @@ process UNZIP_DB {
     script:
     unzipped = archive.toString() - '.zip'
     """
+    ls -alFh / # fdo
+    ls -alFh /tmp # fdo
+    whoami # fdo
+    groups # fdo
     unzip $archive
 
     cat <<-END_VERSIONS > versions.yml
