@@ -1,8 +1,7 @@
 process UNZIP_DB {
     tag "unzip_db"
     label 'process_medium'
-    errorStrategy 'retry'
-    maxRetries 3
+    beforeScript 'i=0; folder=/tmp; while ! [ -w "$folder" ] >/dev/null 2>&1 && [ $i -lt 10 ] ; do echo "Waiting for $folder to exist and be writable..."; i=$((i + 1)); sleep 30 ; done; if ! [ -d "$folder" ] > /dev/null 2>&1 ; then echo "$folder does not exist" ; elif ! [ -w "$folder" ] >/dev/null 2>&1 ; then echo "$folder not writable" ; fi'
 
     conda "conda-forge::sed=4.7"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
@@ -19,10 +18,6 @@ process UNZIP_DB {
     script:
     unzipped = archive.toString() - '.zip'
     """
-    sleep 120 # give the /tmp directory time to initialize
-    ls -alFh /tmp # fdo
-    whoami # fdo
-    groups # fdo
     unzip $archive
 
     cat <<-END_VERSIONS > versions.yml
